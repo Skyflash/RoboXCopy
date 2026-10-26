@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robo-XCopy how-to: a robocopy GUI guide for Windows</title>
+<meta name="description" content="Copy, mirror and back up folders with Robo-XCopy: quick start, every field, the copy builder, log files, administrator rights and troubleshooting.">
+<link rel="canonical" href="https://roboxcopy.com/howto.html">
+<meta name="theme-color" content="#0055aa">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Robo-XCopy">
+<meta property="og:title" content="Robo-XCopy how-to: a robocopy GUI guide for Windows">
+<meta property="og:description" content="Copy, mirror and back up folders with Robo-XCopy: quick start, every field, the copy builder, log files, administrator rights and troubleshooting.">
+<meta property="og:url" content="https://roboxcopy.com/howto.html">
+<meta property="og:image" content="https://roboxcopy.com/img/social.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="site.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Robo-XCopy", "item": "https://roboxcopy.com/" },
+    { "@type": "ListItem", "position": 2, "name": "How-to", "item": "https://roboxcopy.com/howto.html" }
+  ]
+}
+</script>
+</head>
+<body>
+<main>
+  <p class="nav"><a href="./">&larr; Robo-XCopy</a></p>
+  <div class="brand"><img src="icon.svg" width="56" height="56" alt=""><h1>HOW-TO</h1></div>
+  <p class="tag">Everything you need to copy files with Robo-XCopy, in about five minutes.</p>
+
+  <div class="toc">
+    <ul>
+      <li><a href="#quick">1. Quick start</a></li>
+      <li><a href="#screen">2. The screen</a></li>
+      <li><a href="#safe">3. Copying safely</a></li>
+      <li><a href="#filters">4. Filters</a></li>
+      <li><a href="#log">5. Log file</a></li>
+      <li><a href="#admin">6. Administrator rights</a></li>
+      <li><a href="#exit">7. What the result means</a></li>
+      <li><a href="#trouble">8. Troubleshooting</a></li>
+    </ul>
+  </div>
+
+  <h2 id="quick">1. Quick start</h2>
+  <ol>
+    <li>Download <code>RoboXCopy.exe</code> from the <a href="https://github.com/Skyflash/RoboXCopy/releases/latest">latest release</a> and run it. There is nothing to install.</li>
+    <li>Choose the <b>SOURCE</b>: click a drive icon, type a path, or press <b>BROWSE</b>. Do the same for the <b>TARGET</b>.</li>
+    <li>Leave <b>MODE</b> on <code>COPY</code> for a normal copy.</li>
+    <li>Press <b>DRY RUN</b>. Nothing is copied; the log shows what would happen.</li>
+    <li>Press <b>START</b>. The two grids show the progress; the status bar names the file being copied.</li>
+  </ol>
+  <p>The exact robocopy command line is the first line of the <b>LOG</b> window, so you can always see (and reuse) what the program ran.</p>
+
+  <h2 id="screen">2. The screen</h2>
+  <figure>
+    <img src="img/modern.png" width="1440" height="743" loading="lazy"
+         alt="The Robo-XCopy main screen during a copy">
+    <figcaption>The main screen while a copy is running.</figcaption>
+  </figure>
+
+  <h3>Fields</h3>
+  <p>Click a value to change it. Fields with an orange dot toggle; the ones with arrows go up and down by one.</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Field</th><th>Values</th><th>robocopy</th></tr>
+    <tr><td>MODE</td><td><code>COPY</code> copies and never deletes.<br><code>MIRROR</code> makes the target identical to the source, <b>deleting extra files</b>.<br><code>MOVE</code> deletes files from the source after copying them.</td><td>(none), <code>/MIR</code>, <code>/MOVE</code></td></tr>
+    <tr><td>SUBDIRS</td><td><code>ALL</code> includes subfolders, even empty ones. <code>NONE</code> copies only the top folder. Locked to ALL in MIRROR.</td><td><code>/E</code></td></tr>
+    <tr><td>THREADS</td><td>How many files are copied at once. <code>01</code> means one at a time. Default 8.</td><td><code>/MT:n</code></td></tr>
+    <tr><td>RETRY</td><td>How many times to retry a file that fails. Default 3.</td><td><code>/R:n</code></td></tr>
+    <tr><td>WAIT</td><td>Seconds between retries. Default 2.</td><td><code>/W:n</code></td></tr>
+    <tr><td>ATTRIBS</td><td>What is copied for each file. Shows the flags: <code>DAT</code> (data, attributes, timestamps: robocopy's default), <code>DATS</code>, <code>ALL</code>... Click it to open the <a href="#builder">COPY BUILDER</a>.</td><td><code>/COPY:flags</code>, <code>/COPYALL</code></td></tr>
+    <tr><td>UPDATE</td><td>Which files are selected. <code>ALL</code> = no rule, <code>NEWER</code> = skip files the target already has with the same or a newer date, <code>n RULES</code> = a custom set. Click it to open the <a href="#builder">COPY BUILDER</a>.</td><td><code>/XO</code> and others</td></tr>
+  </table>
+  </div>
+
+  <h3>Gadgets</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Gadget</th><th>What it does</th></tr>
+    <tr><td>START</td><td>Runs the copy with the current settings.</td></tr>
+    <tr><td>REPEAT</td><td>Runs the previous copy again, with the same settings.</td></tr>
+    <tr><td>STOP</td><td>Aborts the copy. A file that was being copied may be left half written in the target (see <i>Restartable mode</i> under Filters).</td></tr>
+    <tr><td>DRY RUN</td><td>Lists what would be copied, deleted or skipped, without touching anything.</td></tr>
+    <tr><td>FILTERS</td><td>File masks, excludes and extra switches. See below.</td></tr>
+    <tr><td>LOG</td><td>The live robocopy output, and where to save a log file.</td></tr>
+    <tr><td>THEME</td><td>Switches between <i>Modern Amiga</i> (blue) and <i>Classic X-Copy</i> (black, silver, green). Your choice is remembered.</td></tr>
+    <tr><td>HELP</td><td>A short reminder and links to this page.</td></tr>
+    <tr><td>RUN AS ADMIN</td><td>Restarts the program with administrator rights. See below.</td></tr>
+  </table>
+  </div>
+
+  <h3 id="builder">Copy builder</h3>
+  <p>Robocopy has dozens of switches. The <b>COPY BUILDER</b> lets you pick them with a description next to each one,
+     and shows the exact command it produces. Open it by clicking <b>ATTRIBS</b> or <b>UPDATE</b>, or from the FILTERS window.</p>
+  <figure>
+    <img src="img/builder.png" width="1440" height="743" loading="lazy"
+         alt="The COPY BUILDER window with the copy flags D A T S O U, each with a short description">
+    <figcaption>The COPY BUILDER. Scroll down for the rest of the options and the command preview.</figcaption>
+  </figure>
+  <ul>
+    <li><b>What to copy (<code>/COPY</code>)</b>: <code>D</code> data, <code>A</code> attributes, <code>T</code> timestamps,
+        <code>S</code> security (NTFS permissions), <code>O</code> owner, <code>U</code> auditing. The presets are
+        <code>DAT</code> (robocopy's default), <code>DATS</code>, <code>DATSO</code> and <code>ALL</code> (<code>/COPYALL</code>).
+        At least one flag must stay on.</li>
+    <li><b>Folders (<code>/DCOPY</code>)</b>: what to copy for the folders themselves. Leave it off for robocopy's default (<code>DA</code>);
+        add <code>T</code> to keep folder dates.</li>
+    <li><b>Which files</b>: the selection rules <code>/XO</code> <code>/XN</code> <code>/XC</code> <code>/XL</code> <code>/XX</code>
+        <code>/IS</code> <code>/IT</code>, with presets <i>ALL FILES</i> and <i>ONLY NEWER</i>.</li>
+    <li><b>Other</b>: <code>/PURGE</code>, <code>/FFT</code> (NAS and FAT drives), <code>/DST</code>, <code>/XJ</code>, <code>/J</code>,
+        and the ones that take a value: age (<code>/MAXAGE</code>, <code>/MINAGE</code>), size (<code>/MAX</code>, <code>/MIN</code>),
+        attributes (<code>/IA</code>, <code>/XA</code>) and a pause between blocks (<code>/IPG</code>).</li>
+    <li><b>Command</b>: the resulting command line, live. Anything that has no box can go in <i>Extra args</i> (FILTERS window).</li>
+  </ul>
+  <div class="note">
+    <b>Rules robocopy imposes.</b> <code>/IPG</code> cannot be used with several threads: if you set a pause, Robo-XCopy runs the copy on a single thread
+    (the builder tells you). <code>/XX</code> wins over <code>PURGE</code> and MIRROR, so extra files in the target are then left alone.
+  </div>
+
+  <h3>Drives, paths and grids</h3>
+  <ul>
+    <li>The floppy icons are your drive letters. The lit bulb marks the selected drive. Typing a path is always possible; the icons are a shortcut.</li>
+    <li><b>FILES</b> grid: one cell lights up for every file that has been processed. When it is full it starts again in a second colour.</li>
+    <li><b>CURRENT FILE</b> grid: the progress of the file being copied (one cell is about 1.25%).</li>
+    <li>The counters under the grids show the number of files processed and the elapsed time.</li>
+  </ul>
+
+  <h2 id="safe">3. Copying safely</h2>
+  <div class="note">
+    <b>MIRROR and MOVE delete files.</b> MIRROR removes from the target everything that is not in the source;
+    MOVE removes from the source everything it has copied. Always press <b>DRY RUN</b> first and read the log.
+  </div>
+  <ul>
+    <li>Double-check which folder is the source and which is the target before you press START.</li>
+    <li>Mirroring a folder onto the root of a drive is rarely what you want. Mirror into a dedicated folder instead.</li>
+    <li>If a copy was stopped or the connection dropped, run it again: robocopy skips what is already there.</li>
+  </ul>
+
+  <h2 id="filters">4. Filters</h2>
+  <p>The <b>FILTERS</b> window holds the less common options.</p>
+  <figure>
+    <img src="img/filters.png" width="1440" height="743" loading="lazy"
+         alt="The FILTERS window with restartable, backup and list-only options and the mask and exclude fields">
+    <figcaption>The FILTERS window.</figcaption>
+  </figure>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Option</th><th>Meaning</th><th>robocopy</th></tr>
+    <tr><td>Restartable mode</td><td>Lets an interrupted copy of a large file resume. Slower on small files.</td><td><code>/Z</code></td></tr>
+    <tr><td>Backup mode</td><td>Copies files you can see but not read normally. Needs administrator rights.</td><td><code>/B</code></td></tr>
+    <tr><td>List only</td><td>Same as DRY RUN, but stays on until you untick it.</td><td><code>/L</code></td></tr>
+    <tr><td>Files</td><td>Only these files, e.g. <code>*.doc *.txt</code>. Empty means all.</td><td>(file list)</td></tr>
+    <tr><td>Excl. files</td><td>Skip these files, e.g. <code>*.tmp *.bak</code>.</td><td><code>/XF</code></td></tr>
+    <tr><td>Excl. dirs</td><td>Skip these folders, e.g. <code>node_modules .git</code>.</td><td><code>/XD</code></td></tr>
+    <tr><td>Extra args</td><td>Any other robocopy switches, passed as they are.</td><td>(raw)</td></tr>
+  </table>
+  </div>
+  <p>Separate several names with spaces. A name that contains spaces cannot be used in these fields; use a wildcard instead (<code>My*Docs</code>).</p>
+
+  <h2 id="log">5. Log file</h2>
+  <p>Open <b>LOG</b> and use the <i>Log file</i> line at the top.</p>
+  <figure>
+    <img src="img/log.png" width="1440" height="743" loading="lazy"
+         alt="The LOG window with the log file path, CHOOSE and NONE buttons and the live output">
+    <figcaption>The LOG window: choose where the log file goes.</figcaption>
+  </figure>
+  <ul>
+    <li>Press <b>CHOOSE</b> to pick the folder and the file name, or type a path. <b>NONE</b> turns the log file off.</li>
+    <li>Tick <i>Append</i> to add each run to the same file instead of replacing it.</li>
+    <li>Tick <i>Unicode file</i> if your file names have accents or non-Latin letters: the log is then saved as UTF-16 (<code>/UNILOG</code>) so they read correctly.</li>
+    <li>The folder must already exist: robocopy does not create it, and the program tells you if it is missing.</li>
+    <li>The choice applies from the next START. The window keeps showing the live output as well.</li>
+    <li>Behind the scenes this adds <code>/LOG:file</code> (<code>/LOG+</code> to append, <code>/UNILOG</code> for Unicode) and <code>/TEE</code> to the command.</li>
+  </ul>
+
+  <h2 id="admin">6. Administrator rights</h2>
+  <p>Robo-XCopy starts as a normal user. Most copies do not need more, and a normal user cannot damage Windows by mistake.
+     You need administrator rights when you:</p>
+  <ul>
+    <li>use <b>Backup mode</b> (<code>/B</code>), or the <b>Auditing</b> flag <code>U</code> (part of <code>/COPYALL</code>). Without admin rights robocopy
+        does not even start (exit code 16);</li>
+    <li>copy to or from protected places such as <code>C:\Windows</code>, <code>C:\Program Files</code> or other users' profiles, or files owned by someone else
+        when you copy the owner (<code>O</code>).</li>
+  </ul>
+  <p>Security (<code>S</code>) and owner (<code>O</code>) work without admin rights on your own files.</p>
+  <p>The program helps without nagging you at every start:</p>
+  <ul>
+    <li>The top right of the screen shows <b>RUN AS ADMIN</b> when you are a normal user, and <b>* ADMIN *</b> when you are elevated.</li>
+    <li>If you press START with Backup mode or the Auditing flag and you are not an administrator, a window offers <b>RESTART AS ADMIN</b>, <b>CONTINUE ANYWAY</b> or <b>CANCEL</b>.
+        If you continue anyway, it will not ask again until you close the program.</li>
+    <li>If a copy ends with files denied access (robocopy error 5), or robocopy refused to start because of those options, the same window appears so you can restart elevated and run it again.</li>
+    <li>Restarting keeps your source and target paths. Other settings go back to their defaults. Windows asks you to confirm, as for any program.</li>
+  </ul>
+  <figure>
+    <img src="img/admin.png" width="1440" height="743" loading="lazy"
+         alt="The administrator rights window offering to restart as administrator">
+    <figcaption>The administrator rights window.</figcaption>
+  </figure>
+  <div class="note">
+    <b>Network drives and elevation.</b> Windows does not share mapped drive letters (like <code>Z:</code>) between a normal and an elevated program.
+    After restarting as administrator, use the network path (<code>\\server\share\folder</code>) instead of the drive letter.
+  </div>
+
+  <h2 id="exit">7. What the result means</h2>
+  <p>When robocopy finishes, the status bar translates its exit code. Codes below 8 are success.</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Code</th><th>Meaning</th></tr>
+    <tr><td>0</td><td>Nothing to copy: source and target already match.</td></tr>
+    <tr><td>1</td><td>Files were copied.</td></tr>
+    <tr><td>2</td><td>The target has extra files or folders that are not in the source.</td></tr>
+    <tr><td>4</td><td>Some files or folders are mismatched.</td></tr>
+    <tr><td>3, 5, 6, 7</td><td>A combination of the above (they add up).</td></tr>
+    <tr><td>8 or more</td><td>Some files could not be copied. Check the log.</td></tr>
+    <tr><td>16</td><td>Fatal error, nothing was copied (bad path, no access, wrong syntax).</td></tr>
+  </table>
+  </div>
+
+  <h2 id="trouble">8. Troubleshooting</h2>
+  <h3>Windows says "Windows protected your PC"</h3>
+  <p>The program is not digitally signed yet. Press <i>More info</i>, then <i>Run anyway</i>.
+     You can read the source and build it yourself from <a href="https://github.com/Skyflash/RoboXCopy">GitHub</a>.</p>
+  <h3>"Source folder does not exist"</h3>
+  <p>Check the path, or pick it with BROWSE. If you restarted as administrator, a mapped drive letter may have disappeared; use the network path.</p>
+  <h3>Some files were not copied: access denied</h3>
+  <p>Use <b>RUN AS ADMIN</b>, then START again. If it still fails, the file may be open in another program.</p>
+  <h3>A drive does not show up</h3>
+  <p>The icons list the first eight drive letters from C: that exist when the program starts.
+     You can always type any path in the field.</p>
+  <h3>Where is my theme choice stored?</h3>
+  <p>In <code>%APPDATA%\RoboXCopy\theme.txt</code>. Delete the file to go back to the default.</p>
+  <h3>What command does it run?</h3>
+  <p>The first line of the LOG window. A typical copy looks like this:</p>
+<pre><code>robocopy C:\Users\me\Photos E:\Backup\Photos /E /MT:8 /R:3 /W:2 /NJH /BYTES</code></pre>
+
+  <p class="nav"><a class="btn" href="./">BACK</a>
+     <a class="btn" href="https://github.com/Skyflash/RoboXCopy/issues">REPORT A PROBLEM</a>
+     <a class="btn coffee" href="https://buymeacoffee.com/cristiancastellari">BUY ME A COFFEE</a></p>
+
+  <footer>
+    MIT licensed. &copy; 2026 <a href="https://cristiancastellari.it">Cristian Castellari</a>.<br>
+    Robo-XCopy is not affiliated with Commodore, Amiga or Microsoft.
+  </footer>
+</main>
+</body>
+</html>

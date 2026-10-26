@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robo-XCopy: a retro GUI for robocopy on Windows</title>
+<meta name="description" content="Free Windows app that puts robocopy behind an Amiga X-Copy style screen: copy, mirror and move folders, build the flags visually and keep a log.">
+<link rel="canonical" href="https://roboxcopy.com/">
+<meta name="theme-color" content="#0055aa">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Robo-XCopy">
+<meta property="og:title" content="Robo-XCopy: a retro GUI for robocopy on Windows">
+<meta property="og:description" content="Free Windows app that puts robocopy behind an Amiga X-Copy style screen: copy, mirror and move folders, build the flags visually and keep a log.">
+<meta property="og:url" content="https://roboxcopy.com/">
+<meta property="og:image" content="https://roboxcopy.com/img/social.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="site.css">
+<style>
+  /* The animated demo window. Colours come from the per-theme variables below. */
+  .demo {
+    --d-bg: #0a1e78; --d-panel: #051048; --d-frame: #30d0f0; --d-label: #ffffff;
+    --d-value: #ffb020; --d-off: #123098; --d-on: #ffb020; --d-line: transparent; --d-glyph: transparent;
+    border: 2px solid var(--black); margin: 20px 0; background: var(--d-bg);
+  }
+  .demo[data-theme="classic"] {
+    --d-bg: #000000; --d-panel: #000000; --d-frame: #a8a8a8; --d-label: #c8c8c8;
+    --d-value: #38c038; --d-off: #000000; --d-on: #000000; --d-line: #a8a8a8; --d-glyph: #38d038;
+  }
+  .titlebar {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--white); color: var(--black); padding: 2px 8px; font-weight: bold;
+    border-bottom: 2px solid var(--black);
+  }
+  .demo .body { padding: 10px; color: var(--d-label); }
+  .paths { border: 2px solid var(--d-frame); background: var(--d-panel); padding: 6px 10px; margin-bottom: 10px; font-size: .85rem; }
+  .paths b { color: var(--d-value); font-weight: normal; }
+  .grids { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grids h3 { margin: 0 0 4px; font-size: .7rem; text-align: center; color: var(--d-label); border-bottom: 2px solid var(--d-frame); }
+  .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 1px; background: #000; padding: 1px; }
+  .grid i {
+    aspect-ratio: 1.25; background: var(--d-off); font-style: normal;
+    font-size: .6rem; line-height: 1; text-align: center; color: var(--d-glyph);
+    outline: 1px solid var(--d-line); outline-offset: -1px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .grid i.on { background: var(--d-on); }
+  .grid i.on::after { content: "0"; }
+  .demo:not([data-theme="classic"]) .grid i.on::after { content: ""; }
+  .stats { display: flex; justify-content: space-between; color: var(--d-value); font-size: .8rem; margin: 6px 0 10px; }
+  .status { border: 2px solid var(--d-frame); background: var(--d-panel); padding: 4px 10px; color: var(--d-value); font-size: .8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .demo[data-theme="classic"] .status { color: #f08010; }
+  .demo:not([data-theme="classic"]) .status { color: #fff; }
+
+  @media (max-width: 480px) { .grid i { font-size: .45rem; } }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Robo-XCopy",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Windows",
+  "description": "Free Windows app that puts robocopy behind an Amiga X-Copy style screen: copy, mirror and move folders, build the flags visually and keep a log.",
+  "url": "https://roboxcopy.com/",
+  "downloadUrl": "https://github.com/Skyflash/RoboXCopy/releases/latest",
+  "codeRepository": "https://github.com/Skyflash/RoboXCopy",
+  "license": "https://opensource.org/licenses/MIT",
+  "image": "https://roboxcopy.com/img/social.png",
+  "screenshot": "https://roboxcopy.com/img/modern.png",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "author": { "@type": "Person", "name": "Cristian Castellari", "url": "https://cristiancastellari.it" }
+}
+</script>
+</head>
+<body>
+<main>
+  <div class="brand"><img src="icon.svg" width="56" height="56" alt=""><h1>ROBO-XCOPY</h1></div>
+  <p class="tag">A tiny, fast Windows GUI for robocopy, in the spirit of Amiga X-Copy.</p>
+
+  <p>
+    <a class="btn" href="https://github.com/Skyflash/RoboXCopy/releases/latest">DOWNLOAD</a>
+    <a class="btn" href="howto.html">HOWTO</a>
+    <a class="btn" href="https://github.com/Skyflash/RoboXCopy">SOURCE</a>
+    <span class="count" id="dl-count" hidden></span>
+  </p>
+
+  <div class="demo" id="demo" data-theme="modern" aria-label="Animated demo of a copy in progress" role="img">
+    <div class="titlebar">
+      <span>Robo-XCopy Professional</span>
+      <button class="btn small" id="theme" type="button" aria-label="Switch demo theme">THEME</button>
+    </div>
+    <div class="body">
+      <div class="paths">
+        Source &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>C:\Users\me\Photos</b><br>
+        Destination <b>E:\Backup\Photos</b>
+      </div>
+      <div class="grids">
+        <div><h3>FILES</h3><div class="grid" id="g-files"></div></div>
+        <div><h3>CURRENT FILE</h3><div class="grid" id="g-cur"></div></div>
+      </div>
+      <div class="stats"><span id="count">FILES 0</span><span id="time">TIME: 00:00</span></div>
+      <div class="status" id="status">Copying...</div>
+    </div>
+  </div>
+
+  <h2>Why</h2>
+  <p>Robocopy is the file copy and backup tool built into Windows, and it is the best one there is, but nobody remembers its switches.
+     Robo-XCopy is a free, open-source graphical front end (GUI) for it: copy, mirror, move or back up folders from a retro Amiga X-Copy style screen,
+     with the exact command shown every time. See the <a href="howto.html">how-to</a> for the details.</p>
+
+  <h2>Features</h2>
+  <ul>
+    <li>One ~4.6 MB <code>.exe</code>. No installer, no runtime.</li>
+    <li>Dry run (<code>/L</code>) to preview before you copy.</li>
+    <li>Mirror, move, multi-thread, retries, restartable and backup mode, excludes.</li>
+    <li>Live progress on the classic track grids.</li>
+    <li>Optional log file, saved wherever you choose.</li>
+    <li>Knows when it needs administrator rights and offers to restart elevated.</li>
+    <li>Two themes: Modern Amiga and Classic X-Copy.</li>
+    <li>Works on any Windows language.</li>
+  </ul>
+
+  <h2>Screenshots</h2>
+  <figure>
+    <img src="img/modern.png" width="1440" height="743" loading="lazy"
+         alt="Robo-XCopy with the Modern Amiga theme: blue screen, orange values, track grids filling up during a copy">
+    <figcaption>Modern Amiga: the default theme.</figcaption>
+  </figure>
+  <figure>
+    <img src="img/classic.png" width="1440" height="743" loading="lazy"
+         alt="Robo-XCopy with the Classic X-Copy theme: black screen, silver frames, green values and zero marks in the track grids">
+    <figcaption>Classic X-Copy: black, silver and green, like the original screen.</figcaption>
+  </figure>
+
+  <h2>Install</h2>
+  <p>Download <code>RoboXCopy.exe</code> from the latest release and run it. Windows only.
+     New here? Read the <a href="howto.html">how-to</a>.</p>
+  <p><strong>Heads up:</strong> Mirror mode deletes files from the destination that are not in the source.
+     Do a dry run first.</p>
+
+  <h2>Support</h2>
+  <p>Robo-XCopy is free and open source. If it saved you some time, a coffee is always welcome.</p>
+  <p><a class="btn coffee" href="https://buymeacoffee.com/cristiancastellari">BUY ME A COFFEE</a></p>
+
+  <footer>
+    MIT licensed. &copy; 2026 <a href="https://cristiancastellari.it">Cristian Castellari</a>.<br>
+    Robo-XCopy is not affiliated with Commodore, Amiga or Microsoft.
+  </footer>
+</main>
+<script>
+  // Download counter: total downloads of every release asset, from the public GitHub API.
+  // Cached for an hour (the API allows 60 anonymous calls per hour per visitor) and simply
+  // hidden when there is nothing to show or the call fails.
+  (() => {
+    const el = document.getElementById('dl-count');
+    const KEY = 'rxc-downloads', TTL = 3600e3;
+    const show = (n) => {
+      if (n > 0) { el.textContent = n.toLocaleString('en') + (n === 1 ? ' download' : ' downloads'); el.hidden = false; }
+    };
+    try {
+      const c = JSON.parse(localStorage.getItem(KEY));
+      if (c && Date.now() - c.t < TTL) { show(c.n); return; }
+    } catch (e) { /* storage unavailable: just ask again */ }
+    fetch('https://api.github.com/repos/Skyflash/RoboXCopy/releases?per_page=100')
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((releases) => {
+        const n = releases.flatMap((r) => r.assets).reduce((sum, a) => sum + a.download_count, 0);
+        try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), n })); } catch (e) { /* ignore */ }
+        show(n);
+      })
+      .catch(() => {});
+  })();
+
+  // Fake copy: the right grid fills for each file, the left grid lights one cell per finished file.
+  (() => {
+    const demo = document.getElementById('demo');
+    const CELLS = 80, STEP = 8, TICK_MS = 45, PAUSE_TICKS = 50;
+    const names = ['IMG_0452.jpg', 'IMG_0453.jpg', 'holiday.mp4', 'notes.txt', 'DSC_1208.raw', 'scan-07.pdf', 'album.zip'];
+
+    const build = (id) => {
+      const el = document.getElementById(id);
+      return Array.from({ length: CELLS }, () => el.appendChild(document.createElement('i')));
+    };
+    const files = build('g-files');
+    const cur = build('g-cur');
+    const $ = (id) => document.getElementById(id);
+
+    let done = 0, pct = 0, pause = 0, start = Date.now(), finished = false;
+
+    const render = () => {
+      files.forEach((c, i) => c.classList.toggle('on', i < done));
+      cur.forEach((c, i) => c.classList.toggle('on', i < pct));
+      const s = Math.floor((Date.now() - start) / 1000);
+      $('count').textContent = 'FILES ' + String(done).padStart(4, ' ').replace(/ /g, '\u00a0');
+      $('time').textContent = 'TIME: ' + String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+      $('status').textContent = finished
+        ? 'Done: files copied (exit code 1)'
+        : 'Copying...  C:\\Users\\me\\Photos\\' + names[done % names.length];
+    };
+
+    $('theme').addEventListener('click', () => {
+      demo.dataset.theme = demo.dataset.theme === 'classic' ? 'modern' : 'classic';
+    });
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      done = 52; pct = 48; render();
+      return;
+    }
+
+    setInterval(() => {
+      if (finished) {
+        if (++pause > PAUSE_TICKS) { done = 0; pct = 0; pause = 0; finished = false; start = Date.now(); }
+      } else {
+        pct += STEP;
+        if (pct >= CELLS) {
+          pct = 0;
+          if (++done >= CELLS) { finished = true; pct = 0; }
+        }
+      }
+      render();
+    }, TICK_MS);
+  })();
+</script>
+</body>
+</html>

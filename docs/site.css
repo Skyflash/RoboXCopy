@@ -1,0 +1,63 @@
+/* Shared by index.html and howto.html */
+:root {
+  --blue: #0055aa;
+  --blue-dark: #003377;
+  --orange: #ff8800;
+  /* Orange for text on the blue page: #ff8800 only reaches 3.05:1, this one 4.57:1 (WCAG AA needs 4.5). */
+  --accent: #ffc266;
+  --white: #ffffff;
+  --black: #000000;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--blue);
+  color: var(--white);
+  font: 16px/1.5 "Courier New", Consolas, monospace;
+}
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; }
+.brand { display: flex; align-items: center; gap: 14px; margin: 0 0 4px; }
+.brand img { image-rendering: pixelated; flex: none; }
+.brand h1 { margin: 0; }
+h1 { color: var(--accent); font-size: 2rem; margin: 0 0 4px; letter-spacing: 2px; }
+h2 { color: var(--accent); font-size: 1.1rem; margin: 32px 0 8px; text-transform: uppercase; }
+h3 { color: var(--white); font-size: 1rem; margin: 20px 0 6px; }
+p { margin: 0 0 12px; }
+a { color: var(--accent); }
+.tag { opacity: .85; margin-bottom: 20px; }
+.count { font-size: .85rem; opacity: .85; margin-left: 4px; white-space: nowrap; }
+
+.btn {
+  display: inline-block; padding: 8px 20px; margin: 4px 8px 4px 0;
+  background: var(--white); color: var(--black); text-decoration: none; font-weight: bold;
+  border: 2px solid var(--black); box-shadow: 3px 3px 0 var(--black);
+  font-family: inherit; font-size: 1rem; cursor: pointer;
+}
+.btn.coffee { background: var(--orange); }
+.btn.coffee:hover { background: var(--white); }
+.btn:hover { background: var(--orange); }
+.btn:active { background: var(--black); color: var(--orange); box-shadow: none; transform: translate(3px, 3px); }
+.btn.small { padding: 0 10px; margin: 0; font-size: .75rem; box-shadow: 2px 2px 0 var(--black); }
+
+figure { margin: 16px 0; }
+figure img { display: block; width: 100%; height: auto; border: 2px solid var(--black); box-shadow: 4px 4px 0 var(--black); }
+figcaption { font-size: .85rem; opacity: .85; margin-top: 8px; }
+
+ul, ol { padding-left: 22px; margin: 0 0 12px; }
+li { margin-bottom: 4px; }
+code { background: var(--black); padding: 1px 6px; }
+pre { background: var(--black); padding: 10px 12px; overflow-x: auto; margin: 0 0 12px; }
+pre code { padding: 0; }
+
+table { border-collapse: collapse; width: 100%; margin: 0 0 14px; font-size: .9rem; }
+th, td { border: 2px solid var(--black); padding: 4px 8px; text-align: left; vertical-align: top; }
+th { background: var(--blue-dark); color: var(--accent); }
+.table-wrap { overflow-x: auto; }
+
+.note { border: 2px solid var(--orange); background: var(--blue-dark); padding: 8px 12px; margin: 0 0 14px; }
+.nav { margin: 0 0 16px; }
+.toc { background: var(--blue-dark); border: 2px solid var(--black); padding: 8px 14px; margin: 0 0 8px; }
+.toc ul { margin: 0; list-style: none; padding-left: 0; }
+
+footer { margin-top: 40px; opacity: .8; font-size: .9rem; }
+@media (max-width: 480px) { h1 { font-size: 1.5rem; } }
