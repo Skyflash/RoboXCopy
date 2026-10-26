@@ -1,6 +1,6 @@
 [package]
 name = "roboxcopy"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "Robo-XCopy: an Amiga X-Copy-style front end for Windows robocopy"
 license = "MIT"

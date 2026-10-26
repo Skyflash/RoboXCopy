@@ -45,7 +45,7 @@ jobs:
 
 
           ---
-          **Download** `RoboXCopy.exe` (Windows, nothing to install).
+          **Download** ``RoboXCopy.exe`` (Windows, nothing to install).
           SHA-256: ``$hash``
 
           Windows may show "Windows protected your PC" because the file is not code-signed yet:

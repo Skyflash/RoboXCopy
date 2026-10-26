@@ -5,11 +5,6 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versio
 
 ## [Unreleased]
 
-### Fixed
-- The exe no longer needs the Visual C++ Redistributable: the C runtime is linked in (`.cargo/config.toml`, `crt-static`).
-  Version 0.1.0 imported `vcruntime140.dll`, which a clean Windows install does not have, so it could fail to start there.
-  The exe grows from about 4.9 to 5.0 MB.
-
 ### Planned
 - Installer (Inno Setup, per-user, with the portable exe kept) and a winget package.
 - Code signing (SignPath Foundation for open source, or Trusted Signing); until then SHA-256 and build attestation.
@@ -22,6 +17,14 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versio
 - TOOLKIT mode (separate phase): raw disk clone, wipe and verify, with bad-sector handling.
   Needs admin rights, volume locking, system-disk protection and typed confirmation.
   See `CLAUDE.md` for the constraints.
+
+## [0.1.1] - 2026-10-26
+
+### Fixed
+- The exe no longer needs the Visual C++ Redistributable: the C runtime is linked in (`.cargo/config.toml`, `crt-static`).
+  Version 0.1.0 imported `vcruntime140.dll`, which a clean Windows install does not have, so it could fail to start there.
+  The exe grows from about 4.9 to 5.0 MB.
+- Release notes: the file name is shown as code.
 
 ## [0.1.0] - 2026-10-26
 
