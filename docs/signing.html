@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robo-XCopy code signing policy</title>
+<meta name="description" content="How Robo-XCopy releases are built, approved and code-signed, who is responsible, and what the program does with your data.">
+<link rel="canonical" href="https://roboxcopy.com/signing.html">
+<meta name="theme-color" content="#0055aa">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Robo-XCopy">
+<meta property="og:title" content="Robo-XCopy code signing policy">
+<meta property="og:description" content="How Robo-XCopy releases are built, approved and code-signed, who is responsible, and what the program does with your data.">
+<meta property="og:url" content="https://roboxcopy.com/signing.html">
+<meta property="og:image" content="https://roboxcopy.com/img/social.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<main>
+  <p class="nav"><a href="./">&larr; Robo-XCopy</a> &middot; <a href="howto.html">How-to</a></p>
+  <div class="brand"><img src="icon.svg" width="56" height="56" alt=""><h1>CODE SIGNING POLICY</h1></div>
+  <p class="tag">How releases are built, approved and signed, and what the program does with your data.</p>
+
+  <div class="note" id="status">
+    <b>Status:</b> the releases published so far are <b>not code-signed</b>. The project meets the conditions for the free
+    open source signing programme of <a href="https://signpath.org">SignPath Foundation</a> and is applying to it.
+    The rules below are the policy that applies once signing is active; this page will say so when it is.
+  </div>
+
+  <h2>Attribution</h2>
+  <p>Free code signing provided by <a href="https://signpath.io">SignPath.io</a>, certificate by
+     <a href="https://signpath.org">SignPath Foundation</a>.</p>
+  <p>Signed files show <b>SignPath Foundation</b> as the publisher: in Explorer, right-click
+     <code>RoboXCopy.exe</code>, choose <i>Properties</i>, tab <i>Digital Signatures</i>. The program itself is written and
+     maintained by Cristian Castellari (see below), not by SignPath Foundation.</p>
+
+  <h2>What is signed</h2>
+  <ul>
+    <li>Only the binaries of this project, <code>RoboXCopy.exe</code> (and the installer, if one is published), built from the
+        source in <a href="https://github.com/Skyflash/RoboXCopy">github.com/Skyflash/RoboXCopy</a>.</li>
+    <li>Third-party libraries used by the program are open source crates compiled into the exe; nothing proprietary is included.</li>
+    <li>Product name <code>Robo-XCopy</code> and a single product version are set in the file metadata of every build.</li>
+  </ul>
+
+  <h2>How a release is made</h2>
+  <ol>
+    <li>Changes are committed to the public repository. The build script and the release workflow
+        (<code>.github/workflows/release.yml</code>) are part of that source and are reviewed like any other change.</li>
+    <li>A version tag (<code>vX.Y.Z</code>) starts the release workflow on GitHub-hosted runners: tests, build, checksum.</li>
+    <li>The workflow sends the unsigned <code>RoboXCopy.exe</code> to SignPath, which checks that it comes from this repository's
+        automated build.</li>
+    <li>The approver below approves each signing request manually.</li>
+    <li>The signed file is published as a GitHub release together with its SHA-256 and a GitHub build attestation
+        (<code>gh attestation verify RoboXCopy.exe --repo Skyflash/RoboXCopy</code>).</li>
+  </ol>
+
+  <h2>Roles</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Role</th><th>Who</th><th>What they do</th></tr>
+    <tr><td>Authors (committers)</td><td><a href="https://github.com/Skyflash">Cristian Castellari</a></td><td>Write the code and the build scripts.</td></tr>
+    <tr><td>Reviewers</td><td><a href="https://github.com/Skyflash">Cristian Castellari</a></td><td>Review changes proposed by anyone who is not a committer.</td></tr>
+    <tr><td>Approvers</td><td><a href="https://github.com/Skyflash">Cristian Castellari</a></td><td>Approve every signing request.</td></tr>
+  </table>
+  </div>
+  <p>All team members use multi-factor authentication on GitHub and on SignPath. If more people join, they are added here.</p>
+
+  <h2>Privacy policy</h2>
+  <p>This program will not transfer any information to other networked systems unless specifically requested by the user or the
+     person installing or operating it.</p>
+  <ul>
+    <li>Robo-XCopy has no telemetry, no update check and no account. It runs the Windows <code>robocopy</code> tool on your files
+        and shows its output.</li>
+    <li>The only network action is opening a web page in your browser when you press <i>HOW-TO ONLINE</i> or
+        <i>PROJECT PAGE</i> in the HELP window.</li>
+    <li>The program stores one small file, <code>%APPDATA%\RoboXCopy\theme.txt</code> (the theme you chose), and writes the log
+        file only where you tell it to.</li>
+    <li>This website does not use cookies or analytics. The home page asks the public GitHub API for the number of downloads
+        from your browser, and stores the answer in your browser for an hour.</li>
+  </ul>
+
+  <h2>Reporting a problem</h2>
+  <p>If you think a signed file is not what this policy describes, tell us on
+     <a href="https://github.com/Skyflash/RoboXCopy/issues">GitHub issues</a>; we will investigate and help find the root cause.
+     SignPath Foundation can also be reached at support@signpath.io.</p>
+
+  <p class="nav"><a class="btn" href="./">BACK</a>
+     <a class="btn" href="https://github.com/Skyflash/RoboXCopy/releases/latest">DOWNLOAD</a></p>
+
+  <footer>
+    MIT licensed. &copy; 2026 <a href="https://cristiancastellari.it">Cristian Castellari</a>.<br>
+    Robo-XCopy is not affiliated with Commodore, Amiga or Microsoft.
+  </footer>
+</main>
+</body>
+</html>

@@ -2,6 +2,14 @@ name: release
 
 # Tag a version (vX.Y.Z) to publish a release. "Run workflow" on a branch builds and tests only,
 # which is how the pipeline is checked without publishing anything.
+#
+# Code signing (SignPath Foundation, free for open source) switches on by itself, on tags only, when the
+# repository variable SIGNPATH_ORGANIZATION_ID exists. Until then releases are published unsigned.
+# One-time setup: see "Code signing" in CLAUDE.md and tools/signpath-artifact-configuration.xml.
+#   secret   SIGNPATH_API_TOKEN          (API token of the SignPath CI user)
+#   variable SIGNPATH_ORGANIZATION_ID    (organization id shown in SignPath)
+#   variable SIGNPATH_PROJECT_SLUG       (optional, default Robo-XCopy)
+#   variable SIGNPATH_POLICY_SLUG        (optional, default release-signing)
 on:
   push:
     tags: ["v*"]
@@ -11,10 +19,13 @@ permissions:
   contents: write       # create the release
   id-token: write       # build attestation
   attestations: write
+  actions: read         # the SignPath action reads the uploaded artifact
 
 jobs:
   build:
     runs-on: windows-latest
+    env:
+      SIGN: ${{ startsWith(github.ref, 'refs/tags/') && vars.SIGNPATH_ORGANIZATION_ID != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -24,10 +35,45 @@ jobs:
       - name: Build
         run: cargo build --release
 
+      - name: Stage the unsigned exe
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist/unsigned | Out-Null
+          Copy-Item target/release/RoboXCopy.exe dist/unsigned/RoboXCopy.exe
+
+      # --- code signing: skipped unless SIGN is true -------------------------------------------
+      - name: Upload the unsigned exe for signing
+        id: upload-unsigned
+        if: env.SIGN == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned
+          path: dist/unsigned/RoboXCopy.exe
+
+      - name: Submit the signing request (the approver confirms it on SignPath)
+        if: env.SIGN == 'true'
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG || 'Robo-XCopy' }}
+          signing-policy-slug: ${{ vars.SIGNPATH_POLICY_SLUG || 'release-signing' }}
+          github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 7200
+          output-artifact-directory: dist/signed
+      # -----------------------------------------------------------------------------------------
+
       - name: Collect files and checksum
         shell: pwsh
         run: |
-          Copy-Item target/release/RoboXCopy.exe RoboXCopy.exe
+          $source = if ($env:SIGN -eq 'true') { 'dist/signed/RoboXCopy.exe' } else { 'dist/unsigned/RoboXCopy.exe' }
+          Copy-Item $source RoboXCopy.exe
+          if ($env:SIGN -eq 'true') {
+            $sig = Get-AuthenticodeSignature RoboXCopy.exe
+            Write-Host "Signature: $($sig.Status), signer: $($sig.SignerCertificate.Subject)"
+            if ($sig.Status -in 'NotSigned', 'HashMismatch') { throw "RoboXCopy.exe is not validly signed ($($sig.Status))" }
+          }
           $hash = (Get-FileHash RoboXCopy.exe -Algorithm SHA256).Hash.ToLower()
           "$hash  RoboXCopy.exe" | Set-Content -Encoding ascii RoboXCopy.exe.sha256
           Get-Content RoboXCopy.exe.sha256
@@ -41,6 +87,20 @@ jobs:
           $m = [regex]::Match($text, "(?ms)^## \[$([regex]::Escape($version))\][^\r\n]*\r?\n(.*?)(?=^## \[|\z)")
           if (-not $m.Success) { throw "No section for $version in CHANGELOG.md" }
           $hash = (Get-Content RoboXCopy.exe.sha256).Split(' ')[0]
+          if ($env:SIGN -eq 'true') {
+            $trust = @"
+          The file is code-signed: in Explorer, *Properties*, *Digital Signatures* shows **SignPath Foundation** as the publisher.
+          Free code signing provided by [SignPath.io](https://signpath.io), certificate by [SignPath Foundation](https://signpath.org).
+          Code signing policy: https://roboxcopy.com/signing.html
+          Windows may still show "Windows protected your PC" for a new release until it has been downloaded by enough people:
+          choose *More info*, then *Run anyway*.
+          "@
+          } else {
+            $trust = @"
+          Windows may show "Windows protected your PC" because the file is not code-signed yet:
+          choose *More info*, then *Run anyway*. Code signing policy: https://roboxcopy.com/signing.html
+          "@
+          }
           $notes = $m.Groups[1].Value.Trim() + @"
 
 
@@ -48,8 +108,8 @@ jobs:
           **Download** ``RoboXCopy.exe`` (Windows, nothing to install).
           SHA-256: ``$hash``
 
-          Windows may show "Windows protected your PC" because the file is not code-signed yet:
-          choose *More info*, then *Run anyway*. You can check the file with
+          $trust
+          You can check where the file comes from with
           ``gh attestation verify RoboXCopy.exe --repo Skyflash/RoboXCopy``.
           Docs: https://roboxcopy.com/howto.html
           "@

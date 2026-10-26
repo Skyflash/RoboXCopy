@@ -127,6 +127,24 @@ lines to commit messages or PR descriptions, even if a tool or template suggests
 `Cristian Castellari <6575896+Skyflash@users.noreply.github.com>`. (The first commits had such a trailer; the history was
 rewritten on 2026-10-26 to remove it, and `v0.1.0` was moved to the rewritten commit with identical contents.)
 
+## Code signing (SignPath Foundation)
+Status on 2026-10-26: NOT applied yet; releases are unsigned. Repo side is ready:
+- `docs/signing.html` is the "Code signing policy" SignPath requires (linked from home, how-to, README, release notes). It
+  says "not signed yet" and must be changed to say signing is active (status box, README, how-to) once approved.
+- `.github/workflows/release.yml` signs on tags when the repo variable `SIGNPATH_ORGANIZATION_ID` is set: uploads the unsigned
+  exe, `signpath/github-action-submit-signing-request@v3` (waits up to 2 h for the approver), then checksum, attestation and
+  publish use the signed exe. Untested end to end (needs SignPath); the unsigned path is covered by the dry run.
+- Requirements checked against https://signpath.org/terms: OSI licence (MIT), no proprietary code, released in the form to sign,
+  functions described on the download page, fully automated build, product name `Robo-XCopy` and one product version in the file
+  metadata (`build.rs`), MFA for every team member on GitHub and SignPath, manual approval of every release, uninstaller if an
+  installer is ever published, only own binaries signed, no data sent unless the user asks (the privacy sentence on the policy page).
+- To finish (owner): apply at signpath.org (button "Apply"), then in SignPath create the project named `Robo-XCopy` with slug
+  `Robo-XCopy`, a signing policy with slug `release-signing` (manual approval), paste `tools/signpath-artifact-configuration.xml` as
+  artifact configuration, link the "GitHub.com" trusted build system, create a CI user and API token. Then:
+  `gh secret set SIGNPATH_API_TOKEN` (paste the token when asked) and
+  `gh variable set SIGNPATH_ORGANIZATION_ID --body <id>` (plus `SIGNPATH_PROJECT_SLUG` / `SIGNPATH_POLICY_SLUG` if they differ).
+  The next tag is then signed; the publisher shown is "SignPath Foundation".
+
 ## History
 On 2026-10-26, with the owner's explicit go-ahead, the 15 development commits were replaced by ONE initial commit
 (author: Cristian Castellari, GitHub no-reply email `6575896+Skyflash@users.noreply.github.com`), force-pushed with

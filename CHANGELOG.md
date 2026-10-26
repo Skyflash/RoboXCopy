@@ -5,6 +5,13 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versio
 
 ## [Unreleased]
 
+### Added
+- Code signing preparation (SignPath Foundation, free for open source): policy page `docs/signing.html` (attribution wording,
+  roles, privacy statement) linked from the home page, how-to, README and release notes; the release workflow can send the exe
+  to SignPath and publish the signed file, and does so by itself once the repository variable `SIGNPATH_ORGANIZATION_ID` and the
+  secret `SIGNPATH_API_TOKEN` exist (releases stay unsigned until then); `tools/signpath-artifact-configuration.xml` to paste
+  into SignPath. Release notes now say whether the file is signed.
+
 ### Planned
 - Installer (Inno Setup, per-user, with the portable exe kept) and a winget package.
 - Code signing (SignPath Foundation for open source, or Trusted Signing); until then SHA-256 and build attestation.
