@@ -1,0 +1,4 @@
+# Link the C runtime into the exe. Without this the exe imports vcruntime140.dll (the Visual C++
+# Redistributable), which a clean Windows install does not have: it would not start there.
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]

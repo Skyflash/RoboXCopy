@@ -8,7 +8,7 @@ A small, fast Windows GUI for `robocopy`, styled after the classic Amiga **X-Cop
 
 Website and how-to: https://roboxcopy.com/
 
-- Single ~4.6 MB `.exe`, no installer, no runtime
+- Single ~5 MB `.exe`, no installer, nothing else to install (the C runtime is built in)
 - Pick source and destination, tick the options, hit **START**
 - **DRY RUN** previews what would happen (`/L`) without touching anything
 - Live per-file progress, a file counter and the Amiga-style "track display"

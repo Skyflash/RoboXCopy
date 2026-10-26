@@ -44,7 +44,7 @@ README, CHANGELOG and the site are in English.
 Toolchain was installed with winget: Rustup (Rust 1.99.1, MSVC target) and VS 2022 Build Tools (C++ workload).
 In a fresh shell add `%USERPROFILE%\.cargo\bin` to PATH.
 - `cargo run` / `cargo build` (debug build shows a console window), `cargo test`
-- `cargo build --release` -> `target\release\RoboXCopy.exe` (~4.6 MB, takes about 5 minutes, no console)
+- `cargo build --release` -> `target\release\RoboXCopy.exe` (~5 MB, takes about 5 minutes, no console)
 - Close any running `RoboXCopy.exe` before rebuilding, or the linker cannot overwrite it.
 
 ## Website screenshots
@@ -80,6 +80,9 @@ The site's animated demo is plain JS at the bottom of `docs/index.html`; to prev
   `gh api -X PUT repos/Skyflash/RoboXCopy/pages -F https_enforced=true`.
 
 ## Design decisions and gotchas
+- Static C runtime: `.cargo/config.toml` sets `-C target-feature=+crt-static`. Without it the exe imports `vcruntime140.dll`
+  (Visual C++ Redistributable), missing on a clean Windows. Found after 0.1.0 by listing the DLL names inside the exe;
+  re-check after dependency or toolchain changes (the exe should list only system DLLs: kernel32, user32, ...).
 - robocopy prints progress percentages ending in `\r`, not `\n`: the reader splits on both.
 - File lines are recognised by shape (tab separated, numeric size field, we pass `/BYTES`), never by
   text, because robocopy output is localised ("Nuovo file" on Italian Windows).
