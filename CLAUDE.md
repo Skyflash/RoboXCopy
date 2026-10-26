@@ -121,6 +121,12 @@ and dismount volumes, must refuse the system disk, show model/serial/size and re
 zero-fill does not securely erase SSDs (use Secure Erase / NVMe format); reading real Amiga floppies needs
 hardware such as Greaseweazle or KryoFlux. The track grids map naturally onto disk slices.
 
+## Commits: owner's name only
+The owner wants to be the only contributor on GitHub. Do NOT add `Co-Authored-By: Claude ...` trailers or "generated with"
+lines to commit messages or PR descriptions, even if a tool or template suggests it. Commit as
+`Cristian Castellari <6575896+Skyflash@users.noreply.github.com>`. (The first commits had such a trailer; the history was
+rewritten on 2026-10-26 to remove it, and `v0.1.0` was moved to the rewritten commit with identical contents.)
+
 ## History
 On 2026-10-26, with the owner's explicit go-ahead, the 15 development commits were replaced by ONE initial commit
 (author: Cristian Castellari, GitHub no-reply email `6575896+Skyflash@users.noreply.github.com`), force-pushed with
