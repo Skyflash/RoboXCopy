@@ -164,3 +164,6 @@ The old commits remain reachable by SHA on GitHub for a while and in any fork; n
    attests the build provenance and publishes `RoboXCopy.exe` + `RoboXCopy.exe.sha256` with the CHANGELOG notes.
 4. Verify without inflating the download counter: download the run artifact (`gh run download <id> -n RoboXCopy`), not
    the release asset, and run `gh attestation verify RoboXCopy.exe --repo Skyflash/RoboXCopy`.
+
+## Promotion
+Private promo kit, post drafts and the status log (winget PR etc.) live in `promo/promo.md`, git-ignored on purpose (not public).
