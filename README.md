@@ -59,8 +59,7 @@ The choice is remembered in `%APPDATA%\RoboXCopy\theme.txt`.
 ## Code signing
 
 Releases ship with a SHA-256 and a GitHub build attestation (`gh attestation verify RoboXCopy.exe --repo Skyflash/RoboXCopy`).
-Free open source code signing from SignPath Foundation is being set up; until then Windows may show a SmartScreen warning
-(*More info*, *Run anyway*). See the [code signing policy](https://roboxcopy.com/signing.html).
+The exe is not code-signed yet, so Windows may show a SmartScreen warning (*More info*, *Run anyway*). See the [code signing policy](https://roboxcopy.com/signing.html).
 
 ## Support
 

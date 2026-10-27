@@ -28,8 +28,10 @@
   <p class="tag">How releases are built, approved and signed, and what the program does with your data.</p>
 
   <div class="note" id="status">
-    <b>Status:</b> the releases published so far are <b>not code-signed</b>. The project meets the conditions for the free
-    open source signing programme of <a href="https://signpath.org">SignPath Foundation</a> and is applying to it.
+    <b>Status:</b> the releases published so far are <b>not code-signed</b>, so Windows may show a SmartScreen warning.
+    Every release has a SHA-256 and a GitHub build attestation, which prove the file was built from this repository
+    (<code>gh attestation verify RoboXCopy.exe --repo Skyflash/RoboXCopy</code>). Free open source code signing
+    (<a href="https://signpath.org">SignPath Foundation</a>) will be requested again once the project is better known.
     The rules below are the policy that applies once signing is active; this page will say so when it is.
   </div>
 

@@ -128,7 +128,10 @@ lines to commit messages or PR descriptions, even if a tool or template suggests
 rewritten on 2026-10-26 to remove it, and `v0.1.0` was moved to the rewritten commit with identical contents.)
 
 ## Code signing (SignPath Foundation)
-Status on 2026-10-26: NOT applied yet; releases are unsigned. Repo side is ready:
+Status on 2026-10-27: SignPath Foundation DECLINED the application (Phillip Deng, oss-support@signpath.org): the project lacks
+public visibility (stars, forks, contributors, external articles/discussions, sustained activity). Decision: stay unsigned, grow
+downloads and visibility, reapply later (the paid SignPath subscription is not worth it for a free tool). Releases are unsigned;
+the home page, README and `docs/signing.html` say so. The repo side below is kept ready for the reapplication:
 - `docs/signing.html` is the "Code signing policy" SignPath requires (linked from home, how-to, README, release notes). It
   says "not signed yet" and must be changed to say signing is active (status box, README, how-to) once approved.
 - `.github/workflows/release.yml` signs on tags when the repo variable `SIGNPATH_ORGANIZATION_ID` is set: uploads the unsigned

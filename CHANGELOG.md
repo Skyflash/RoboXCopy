@@ -14,7 +14,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versio
 
 ### Planned
 - Installer (Inno Setup, per-user, with the portable exe kept) and a winget package.
-- Code signing (SignPath Foundation for open source, or Trusted Signing); until then SHA-256 and build attestation.
+- Code signing: the SignPath Foundation application was declined on 2026-10-27 (not enough public visibility yet); reapply
+  once the project is better known, or look at Trusted Signing. Until then SHA-256 and build attestation.
 - True overall progress: a `/L` pre-scan for total files/bytes, overall bar and ETA.
 - Profiles: save and load source, target and options (including the log file choice).
 - Notification when a copy finishes.
