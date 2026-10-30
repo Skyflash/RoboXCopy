@@ -67,7 +67,10 @@ The site's animated demo is plain JS at the bottom of `docs/index.html`; to prev
 ## Site SEO
 - Domain `roboxcopy.com` now serves the site, so it has its own root: `https://roboxcopy.com/sitemap.xml` is ours.
   There is no `robots.txt` yet (nothing to block; add one with `Sitemap: https://roboxcopy.com/sitemap.xml` if wanted),
-  and the sitemap should still be submitted in Google Search Console.
+  and the sitemap was submitted in Google Search Console on 2026-10-30 (Domain property, verified by DNS TXT at Cloudflare;
+  3 pages found). The site has no analytics and sets no cookies, so it has no cookie banner on purpose; if analytics is ever
+  added, add an opt-in consent banner first (model: `_includes/cookieconsent.html` in the skyflash.github.io repo) and update
+  the privacy section of `docs/signing.html`, which says the site uses no cookies or analytics.
 - Each page needs: unique `<title>` (about 50 chars) and description (about 150), canonical, og/twitter tags, JSON-LD.
   Every absolute URL (canonical, og, JSON-LD, sitemap, README, `HOWTO_URL` in `src/main.rs`) uses `https://roboxcopy.com/`.
   The custom domain is the `cname` of the repo Pages settings, and `docs/CNAME` holds it too (not needed with Actions
