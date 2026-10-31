@@ -12,6 +12,12 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versio
   secret `SIGNPATH_API_TOKEN` exist (releases stay unsigned until then); `tools/signpath-artifact-configuration.xml` to paste
   into SignPath. Release notes now say whether the file is signed.
 
+### Changed
+- SignPath Foundation declined the application, so `docs/signing.html` is now "Security and verification": it states that releases
+  are not code-signed, how to check the SHA-256 and the build attestation, and keeps the privacy section. The signing roles and
+  attribution text were removed (the previous version is in git history for a future reapplication). Links on the home page,
+  how-to, README and release notes were reworded.
+
 ### Planned
 - Installer (Inno Setup, per-user, with the portable exe kept) and a winget package.
 - Code signing: the SignPath Foundation application was declined on 2026-10-27 (not enough public visibility yet); reapply

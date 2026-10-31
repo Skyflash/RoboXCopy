@@ -135,8 +135,10 @@ Status on 2026-10-27: SignPath Foundation DECLINED the application (Phillip Deng
 public visibility (stars, forks, contributors, external articles/discussions, sustained activity). Decision: stay unsigned, grow
 downloads and visibility, reapply later (the paid SignPath subscription is not worth it for a free tool). Releases are unsigned;
 the home page, README and `docs/signing.html` say so. The repo side below is kept ready for the reapplication:
-- `docs/signing.html` is the "Code signing policy" SignPath requires (linked from home, how-to, README, release notes). It
-  says "not signed yet" and must be changed to say signing is active (status box, README, how-to) once approved.
+- `docs/signing.html` (URL kept, linked from home, how-to, README, release notes) is now "Security and verification": unsigned
+  status, SHA-256 / attestation checks, privacy. The full SignPath "Code signing policy" (attribution, roles, approval flow) is
+  in git history: `git show b0ffc00:docs/signing.html`. On reapplication restore it, change the status box to say signing is
+  active, and update README, how-to and the home page.
 - `.github/workflows/release.yml` signs on tags when the repo variable `SIGNPATH_ORGANIZATION_ID` is set: uploads the unsigned
   exe, `signpath/github-action-submit-signing-request@v3` (waits up to 2 h for the approver), then checksum, attestation and
   publish use the signed exe. Untested end to end (needs SignPath); the unsigned path is covered by the dry run.

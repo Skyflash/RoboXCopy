@@ -97,8 +97,8 @@ jobs:
           "@
           } else {
             $trust = @"
-          Windows may show "Windows protected your PC" because the file is not code-signed yet:
-          choose *More info*, then *Run anyway*. Code signing policy: https://roboxcopy.com/signing.html
+          Windows may show "Windows protected your PC" because the file is not code-signed:
+          choose *More info*, then *Run anyway*. How to verify the file: https://roboxcopy.com/signing.html
           "@
           }
           $notes = $m.Groups[1].Value.Trim() + @"

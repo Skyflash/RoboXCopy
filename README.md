@@ -56,10 +56,10 @@ cargo test
 Press **THEME** to switch between *Modern Amiga* (blue) and *Classic X-Copy* (black, silver and green).
 The choice is remembered in `%APPDATA%\RoboXCopy\theme.txt`.
 
-## Code signing
+## Security and verification
 
 Releases ship with a SHA-256 and a GitHub build attestation (`gh attestation verify RoboXCopy.exe --repo Skyflash/RoboXCopy`).
-The exe is not code-signed yet, so Windows may show a SmartScreen warning (*More info*, *Run anyway*). See the [code signing policy](https://roboxcopy.com/signing.html).
+The exe is not code-signed, so Windows may show a SmartScreen warning (*More info*, *Run anyway*). See [security and verification](https://roboxcopy.com/signing.html).
 
 ## Support
 
