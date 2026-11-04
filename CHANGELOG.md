@@ -13,6 +13,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versio
   into SignPath. Release notes now say whether the file is signed.
 
 ### Changed
+- Site: added `docs/robots.txt` (allow all, with the sitemap URL) so crawlers no longer get a 404.
 - SignPath Foundation declined the application, so `docs/signing.html` is now "Security and verification": it states that releases
   are not code-signed, how to check the SHA-256 and the build attestation, and keeps the privacy section. The signing roles and
   attribution text were removed (the previous version is in git history for a future reapplication). Links on the home page,

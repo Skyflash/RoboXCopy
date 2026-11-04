@@ -66,8 +66,8 @@ The site's animated demo is plain JS at the bottom of `docs/index.html`; to prev
 
 ## Site SEO
 - Domain `roboxcopy.com` now serves the site, so it has its own root: `https://roboxcopy.com/sitemap.xml` is ours.
-  There is no `robots.txt` yet (nothing to block; add one with `Sitemap: https://roboxcopy.com/sitemap.xml` if wanted),
-  and the sitemap was submitted in Google Search Console on 2026-10-30 (Domain property, verified by DNS TXT at Cloudflare;
+  `docs/robots.txt` allows everything and points to the sitemap (added 2026-11-05; before that robots.txt was a 404, which
+  Google treats as no restrictions). The sitemap was submitted in Google Search Console on 2026-10-30 (Domain property, verified by DNS TXT at Cloudflare;
   3 pages found). The site has no analytics and sets no cookies, so it has no cookie banner on purpose; if analytics is ever
   added, add an opt-in consent banner first (model: `_includes/cookieconsent.html` in the skyflash.github.io repo) and update
   the privacy section of `docs/signing.html`, which says the site uses no cookies or analytics.
