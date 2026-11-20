@@ -170,5 +170,9 @@ The old commits remain reachable by SHA on GitHub for a while and in any fork; n
 4. Verify without inflating the download counter: download the run artifact (`gh run download <id> -n RoboXCopy`), not
    the release asset, and run `gh attestation verify RoboXCopy.exe --repo Skyflash/RoboXCopy`.
 
+## Community
+Issues, Discussions (enabled 2026-11-20) and private vulnerability reporting are on. Issue forms live in
+`.github/ISSUE_TEMPLATE/` (bug, feature, `config.yml` with contact links); `SECURITY.md` and `CONTRIBUTING.md` at the root.
+
 ## Promotion
 Private promo kit, post drafts and the status log (winget PR etc.) live in `promo/promo.md`, git-ignored on purpose (not public).

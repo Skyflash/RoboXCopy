@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions and ideas
+    url: https://github.com/Skyflash/RoboXCopy/discussions
+    about: Ask how to do something, share ideas or show how you use Robo-XCopy.
+  - name: User guide
+    url: https://roboxcopy.com/howto.html
+    about: How to use the app, step by step.
+  - name: Security problem
+    url: https://github.com/Skyflash/RoboXCopy/security/advisories/new
+    about: Report a vulnerability privately, not in a public issue.

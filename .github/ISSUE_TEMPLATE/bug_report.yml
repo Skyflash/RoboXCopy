@@ -1,0 +1,53 @@
+name: Bug report
+description: Something does not work as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem. Please do not include private paths or file names you would rather keep private.
+        Security problems: please use [private vulnerability reporting](https://github.com/Skyflash/RoboXCopy/security/advisories/new) instead of a public issue.
+  - type: input
+    id: version
+    attributes:
+      label: Robo-XCopy version
+      description: Shown in the ABOUT window or in the exe file properties.
+      placeholder: "0.1.1"
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version and language
+      placeholder: "Windows 11 24H2, Italian"
+    validations:
+      required: true
+  - type: dropdown
+    id: admin
+    attributes:
+      label: Was the app running as administrator?
+      options:
+        - "No"
+        - "Yes"
+        - "Not sure"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: robocopy command and exit code
+      description: The command shown in the LOG window and the exit code reported at the end, if any.
+      render: text
+  - type: textarea
+    id: log
+    attributes:
+      label: Log excerpt
+      description: The relevant lines from the LOG window or the log file.
+      render: text

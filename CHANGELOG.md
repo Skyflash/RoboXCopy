@@ -11,6 +11,9 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versio
   to SignPath and publish the signed file, and does so by itself once the repository variable `SIGNPATH_ORGANIZATION_ID` and the
   secret `SIGNPATH_API_TOKEN` exist (releases stay unsigned until then); `tools/signpath-artifact-configuration.xml` to paste
   into SignPath. Release notes now say whether the file is signed.
+- Community files: issue forms for bug reports and feature requests (with links to Discussions, the user guide and
+  private security reporting), `SECURITY.md` and `CONTRIBUTING.md`. GitHub Discussions and private vulnerability
+  reporting are now enabled on the repository.
 
 ### Changed
 - Site: added `docs/robots.txt` (allow all, with the sitemap URL) so crawlers no longer get a 404.
